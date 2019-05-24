@@ -24,6 +24,19 @@ namespace NDoD
         bool holdingCase = false;
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
+        int _waitingCases = 3;
+        int waitingCases
+        { //TODO bind this instead of using property
+            get
+            {
+                return _waitingCases;
+            }
+            set
+            {
+                _waitingCases = value;
+                BankerStatusLabel.Content = "Open " + value + " more cases to summon the BANKER!";
+            }
+        }
 
         public MainWindow()
         {
@@ -31,7 +44,7 @@ namespace NDoD
 
             MessageBox.Show("First, select a case to hold.");
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++) //6 is the number of cases to add to AvailableCases
             {
                 AvailableCases.Add(new Case());
             }
@@ -51,6 +64,14 @@ namespace NDoD
 
                 MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question);
                 ClaimCase(randomCase);
+
+                waitingCases--;
+                if (waitingCases <= 0)
+                {
+                    MessageBox.Show("The banker has been summoned!\n\nHe offers $" + AverageCaseValue(AvailableCases) + ", do you accept?",
+                        "Banker's Offer", MessageBoxButton.YesNo);
+                    waitingCases = 1;
+                }
             }
             else
             {
@@ -69,6 +90,18 @@ namespace NDoD
             Case swap = AvailableCases[index];
             AvailableCases.RemoveAt(index);
             ClaimedCases.Add(swap);
+        }
+
+        int AverageCaseValue(ObservableCollection<Case> cases)
+        {
+            int totalSum = 0;
+
+            for (int i = 0; i < cases.Count; i++)
+            {
+                totalSum += cases[i].Answer;
+            }
+
+            return totalSum / cases.Count;
         }
 
         class Case
