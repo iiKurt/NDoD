@@ -1,0 +1,38 @@
+﻿<Window x:Class="NDoD.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NDoD"
+        mc:Ignorable="d"
+        Title="No Deal or Deal" Height="350" Width="566.176" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Content="Cases Available:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Cases Taken:" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="76"/>
+
+        <ListBox x:Name="AvailableCasesListBox" ItemsSource="{Binding}" HorizontalAlignment="Left" Margin="10,41,0,10" Width="100">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Question}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="ClaimedCasesListBox" ItemsSource="{Binding}" HorizontalAlignment="Right" Margin="0,41,10,10" Width="100">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Question}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button x:Name="SelectedCaseButton" Content="Your Case" HorizontalAlignment="Left" Margin="115,0,0,10" Width="75" IsEnabled="False" Height="20" VerticalAlignment="Bottom"/>
+
+        <Button Content="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="140,61,0,0" Click="CaseButton_Click"/>
+        <Button Content="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="220,61,0,0" Click="CaseButton_Click"/>
+        <Button Content="3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="300,61,0,0" Click="CaseButton_Click"/>
+        <Button Content="4" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="140,86,0,0" Click="CaseButton_Click"/>
+        <Button Content="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="220,86,0,0" Click="CaseButton_Click"/>
+        <Button Content="6" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="300,86,0,0" Click="CaseButton_Click"/>
+        <Label Content="Open X more cases to summon the BANKER!" Margin="195,0,115,7" Height="26" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>
