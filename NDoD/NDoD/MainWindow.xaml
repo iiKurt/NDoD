@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NDoD"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="No Deal or Deal" Height="350" Width="573.039" WindowStartupLocation="CenterScreen">
     <Grid>

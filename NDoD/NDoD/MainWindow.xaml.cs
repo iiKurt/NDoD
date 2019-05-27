@@ -24,6 +24,7 @@ namespace NDoD
         bool holdingCase = false;
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
+
         int _waitingCases = 3;
         int waitingCases
         { //TODO bind this instead of using property
@@ -62,7 +63,7 @@ namespace NDoD
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
 
-                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question);
+                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Answer); //Change this
                 ClaimCase(randomCase);
 
                 waitingCases--;
@@ -109,6 +110,7 @@ namespace NDoD
             public string Question { get; private set; }
             public int Answer { get; private set; }
 
+            static List<int> Rewards = new List<int>{ 1, 5, 10, 25, 50, 100, 150, 200, 250, 500, 750, 1000 };
             static Random rng = new Random();
 
             public Case()
@@ -118,11 +120,15 @@ namespace NDoD
 
             void New()
             {
-                int firstNumber = rng.Next(1, 100);
+                int ChosenReward = Rewards[rng.Next(1, Rewards.Count)];
+
+                int firstNumber = rng.Next(1, ChosenReward);
                 int secondNumber = rng.Next(1, 100);
 
-                Question = firstNumber + " + " + secondNumber;
-                Answer = firstNumber + secondNumber;
+                Question = firstNumber + " + " + (ChosenReward - firstNumber);
+                Answer = firstNumber + (ChosenReward - firstNumber);
+
+                Rewards.Remove(ChosenReward);
             }
         }
     }
