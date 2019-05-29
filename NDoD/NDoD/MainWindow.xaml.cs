@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
 namespace NDoD
@@ -21,6 +11,8 @@ namespace NDoD
     /// </summary>
     public partial class MainWindow : Window
     {
+        const int CaseCount = 6;
+
         bool holdingCase = false;
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
@@ -40,12 +32,39 @@ namespace NDoD
         }
 
         public MainWindow()
-        {
+        { //Todo incremenet/decrement margin values
             InitializeComponent();
+
+            int marginLeft = 140;
+            int marginTop = 61;
+            const int marginLeftIncrement = 80;
+            const int marginTopIncrement = 25;
+
+            for (int i = 0; i < CaseCount; i++)
+            {
+                Button button = new Button()
+                {
+                    Content = i,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = 75,
+                    Margin = new Thickness(marginLeft, marginTop, 0, 0)
+                };
+                button.Click += CaseButton_Click;
+
+                WindowGrid.Children.Add(button);
+
+                marginLeft += marginLeftIncrement;
+                if (marginLeft >= 460) //After this the buttons go off the screen
+                {
+                    marginLeft -= marginLeftIncrement * (CaseCount - 2);
+                    marginTop += marginTopIncrement;
+                }
+            }
 
             MessageBox.Show("First, select a case to hold.");
 
-            for (int i = 0; i < 6; i++) //6 is the number of cases to add to AvailableCases
+            for (int i = 0; i < CaseCount; i++)
             {
                 AvailableCases.Add(new Case());
             }
