@@ -89,7 +89,7 @@ namespace NDoD
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
 
-                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Answer); //Change this
+                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question); //Change this
                 ClaimCase(randomCase);
                 
                 if (waitingCases <= 0)
@@ -100,7 +100,7 @@ namespace NDoD
                 if (AvailableCases.Count <= 2)
                 {
                     MessageBox.Show("Let's see what's in your case...");
-                    MessageBox.Show("It's $" + AvailableCases[0].Answer + "!!!");
+                    MessageBox.Show("It's $" + AvailableCases[0].Question + "!!!");
                     this.Close();
                 }
             }
