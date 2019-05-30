@@ -19,7 +19,7 @@ namespace NDoD
 
         int _waitingCases = 3;
         int waitingCases
-        { //TODO bind this instead of using property
+        { //TODO: bind this instead of using property
             get
             {
                 return _waitingCases;
@@ -167,7 +167,7 @@ namespace NDoD
             New();
         }
 
-        void New()
+        void New() //TODO: different question types
         {
             int ChosenReward = Rewards[rng.Next(1, Rewards.Count)];
 
