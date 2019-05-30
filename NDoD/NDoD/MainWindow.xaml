@@ -11,22 +11,22 @@
         <Label Content="Cases Available:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label Content="Cases Taken:" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="76"/>
 
-        <ListBox x:Name="AvailableCasesListBox" ItemsSource="{Binding}" HorizontalAlignment="Left" Margin="10,41,0,10" Width="100">
+        <ListBox x:Name="AvailableCasesListBox" ItemsSource="{Binding}" HorizontalAlignment="Left" Margin="10,41,0,10" Width="120">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Question, StringFormat=${0}}"/>
+                    <TextBlock Text="{Binding Answer, StringFormat=${0}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="ClaimedCasesListBox" ItemsSource="{Binding}" HorizontalAlignment="Right" Margin="0,41,10,10" Width="100">
+        <ListBox x:Name="ClaimedCasesListBox" ItemsSource="{Binding}" HorizontalAlignment="Right" Margin="0,41,10,10" Width="120">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Question, StringFormat=${0}}"/>
+                    <TextBlock Text="{Binding Answer, StringFormat=${0}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button x:Name="SelectedCaseButton" Content="Your Case" HorizontalAlignment="Left" Margin="115,0,0,10" Width="75" IsEnabled="False" Height="20" VerticalAlignment="Bottom"/>
-        <Label x:Name="BankerStatusLabel" Content="Open some cases to summon the BANKER!" Margin="195,0,115,7" Height="26" VerticalAlignment="Bottom"/>
+        <Button x:Name="SelectedCaseButton" Content="Your Case" HorizontalAlignment="Left" Margin="135,0,0,10" Width="75" IsEnabled="False" Height="20" VerticalAlignment="Bottom"/>
+        <Label x:Name="BankerStatusLabel" Content="Open some cases to summon the BANKER!" Margin="215,0,135,7" Height="26" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

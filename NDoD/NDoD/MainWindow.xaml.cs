@@ -11,7 +11,7 @@ namespace NDoD
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int CaseCount = 6;
+        const int CaseCount = 24; //Determines amount of buttons/cases to generate
 
         bool holdingCase = false;
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
@@ -32,35 +32,10 @@ namespace NDoD
         }
 
         public MainWindow()
-        { //Todo incremenet/decrement margin values
+        {
             InitializeComponent();
 
-            int marginLeft = 140;
-            int marginTop = 61;
-            const int marginLeftIncrement = 80;
-            const int marginTopIncrement = 25;
-
-            for (int i = 0; i < CaseCount; i++)
-            {
-                Button button = new Button()
-                {
-                    Content = i,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Width = 75,
-                    Margin = new Thickness(marginLeft, marginTop, 0, 0)
-                };
-                button.Click += CaseButton_Click;
-
-                WindowGrid.Children.Add(button);
-
-                marginLeft += marginLeftIncrement;
-                if (marginLeft >= 460) //After this the buttons go off the screen
-                {
-                    marginLeft -= marginLeftIncrement * (CaseCount - 2);
-                    marginTop += marginTopIncrement;
-                }
-            }
+            AddButtons();
 
             MessageBox.Show("First, select a case to hold.");
 
@@ -73,24 +48,60 @@ namespace NDoD
             ClaimedCasesListBox.ItemsSource = ClaimedCases;
         }
 
+        void AddButtons()
+        {
+            int marginLeft = 140;
+            int marginTop = 61;
+            const int marginLeftIncrement = 80;
+            const int marginTopIncrement = 25;
+
+            for (int i = 0; i < CaseCount; i++)
+            {
+                Button button = new Button()
+                {
+                    Content = i + 1, //starts at zero
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Width = 60,
+                    Margin = new Thickness(marginLeft, marginTop, 0, 0)
+                };
+                button.Click += CaseButton_Click;
+
+                WindowGrid.Children.Add(button);
+
+                marginLeft += marginLeftIncrement;
+                if (marginLeft >= 460) //After this the buttons go off the screen
+                {
+                    marginLeft -= marginLeftIncrement * 4; //Limit of buttons horizontally
+                    marginTop += marginTopIncrement;
+                }
+            }
+        }
+
         private void CaseButton_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).IsEnabled = false;
 
             if (holdingCase)
             {
+                waitingCases--;
+
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
 
                 MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Answer); //Change this
                 ClaimCase(randomCase);
-
-                waitingCases--;
+                
                 if (waitingCases <= 0)
                 {
-                    MessageBox.Show("The banker has been summoned!\n\nHe offers $" + AverageCaseValue(AvailableCases) + ", do you accept?",
-                        "Banker's Offer", MessageBoxButton.YesNo);
-                    waitingCases = 1;
+                    SummonBanker();
+                }
+
+                if (AvailableCases.Count <= 2)
+                {
+                    MessageBox.Show("Let's see what's in your case...");
+                    MessageBox.Show("It's $" + AvailableCases[0].Answer + "!!!");
+                    this.Close();
                 }
             }
             else
@@ -102,6 +113,24 @@ namespace NDoD
                 holdingCase = true;
 
                 MessageBox.Show("Next, select a case to open.");
+            }
+        }
+
+        void SummonBanker()
+        {
+            int offer = AverageCaseValue(AvailableCases);
+
+            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nHe offers $" + offer + ", do you accept?",
+                        "Banker's Offer", MessageBoxButton.YesNo);
+
+            if (bankerChoice == MessageBoxResult.No)
+            {
+                waitingCases = 1;
+            }
+            else
+            {
+                MessageBox.Show("Congratulations you've won $" + offer + "!");
+                this.Close();
             }
         }
 
@@ -123,32 +152,32 @@ namespace NDoD
 
             return totalSum / cases.Count;
         }
+    }
 
-        class Case
+    class Case
+    {
+        public string Question { get; private set; }
+        public int Answer { get; private set; }
+
+        static List<int> Rewards = new List<int> { 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000 };
+        static Random rng = new Random();
+
+        public Case()
         {
-            public string Question { get; private set; }
-            public int Answer { get; private set; }
+            New();
+        }
 
-            static List<int> Rewards = new List<int>{ 1, 5, 10, 25, 50, 100, 150, 200, 250, 500, 750, 1000 };
-            static Random rng = new Random();
+        void New()
+        {
+            int ChosenReward = Rewards[rng.Next(1, Rewards.Count)];
 
-            public Case()
-            {
-                New();
-            }
+            int firstNumber = rng.Next(1, ChosenReward);
+            int secondNumber = rng.Next(1, 100);
 
-            void New()
-            {
-                int ChosenReward = Rewards[rng.Next(1, Rewards.Count)];
+            Question = firstNumber + " + " + (ChosenReward - firstNumber);
+            Answer = firstNumber + (ChosenReward - firstNumber);
 
-                int firstNumber = rng.Next(1, ChosenReward);
-                int secondNumber = rng.Next(1, 100);
-
-                Question = firstNumber + " + " + (ChosenReward - firstNumber);
-                Answer = firstNumber + (ChosenReward - firstNumber);
-
-                Rewards.Remove(ChosenReward);
-            }
+            Rewards.Remove(ChosenReward);
         }
     }
 }
