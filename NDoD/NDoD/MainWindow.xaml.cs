@@ -17,7 +17,7 @@ namespace NDoD
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
 
-        int _waitingCases = 3;
+        int _waitingCases = 8;
         int waitingCases
         { //TODO: bind this instead of using property
             get
@@ -37,7 +37,7 @@ namespace NDoD
 
             AddButtons();
 
-            MessageBox.Show("First, select a case to hold.");
+            MessageBox.Show("First, select a case to hold.", "Tutorial");
 
             for (int i = 0; i < CaseCount; i++)
             {
@@ -50,7 +50,7 @@ namespace NDoD
 
         void AddButtons()
         {
-            int marginLeft = 140;
+            int marginLeft = 150;
             int marginTop = 61;
             const int marginLeftIncrement = 80;
             const int marginTopIncrement = 25;
@@ -77,23 +77,32 @@ namespace NDoD
                 }
             }
         }
-
+        
         private void CaseButton_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).IsEnabled = false;
 
             if (holdingCase)
             {
-                waitingCases--;
-
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
 
-                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question); //Change this
+                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question);
                 ClaimCase(randomCase);
-                
+
+                waitingCases--;
+
                 if (waitingCases <= 0)
                 {
+                    if (AvailableCases.Count <= 8)
+                    {
+                        waitingCases = 1;
+                    }
+                    else
+                    {
+                        waitingCases = 6;
+                    }
+
                     SummonBanker();
                 }
 
@@ -112,7 +121,7 @@ namespace NDoD
 
                 holdingCase = true;
 
-                MessageBox.Show("Next, select a case to open.");
+                MessageBox.Show("Next, select a case to open.", "Tutorial");
             }
         }
 
@@ -123,11 +132,7 @@ namespace NDoD
             MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nHe offers $" + offer + ", do you accept?",
                         "Banker's Offer", MessageBoxButton.YesNo);
 
-            if (bankerChoice == MessageBoxResult.No)
-            {
-                waitingCases = 1;
-            }
-            else
+            if (bankerChoice == MessageBoxResult.Yes)
             {
                 MessageBox.Show("Congratulations you've won $" + offer + "!");
                 this.Close();
@@ -164,10 +169,10 @@ namespace NDoD
 
         public Case()
         {
-            New();
+            NewAdditionQuestion();
         }
 
-        void New() //TODO: different question types
+        void NewAdditionQuestion() //TODO: different question types
         {
             int ChosenReward = Rewards[rng.Next(1, Rewards.Count)];
 
