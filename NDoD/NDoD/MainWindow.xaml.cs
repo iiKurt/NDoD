@@ -11,7 +11,7 @@ namespace NDoD
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int CaseCount = 24; //Determines amount of buttons/cases to generate
+        const int CaseCount = 16; //Determines amount of buttons/cases to generate
 
         bool holdingCase = false;
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
@@ -87,7 +87,7 @@ namespace NDoD
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
 
-                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question);
+                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question + " Answer:" + AvailableCases[randomCase].Answer);
                 ClaimCase(randomCase);
 
                 waitingCases--;
@@ -169,20 +169,70 @@ namespace NDoD
 
         public Case()
         {
-            NewAdditionQuestion();
+            AssignEquation();
         }
 
-        void NewAdditionQuestion() //TODO: different question types
+        void AssignEquation()
         {
-            int ChosenReward = Rewards[rng.Next(1, Rewards.Count)];
+            int chosenReward = Rewards[rng.Next(1, Rewards.Count)];
+            Rewards.Remove(chosenReward);
 
-            int firstNumber = rng.Next(1, ChosenReward);
-            int secondNumber = rng.Next(1, 100);
+            Answer = chosenReward;
 
-            Question = firstNumber + " + " + (ChosenReward - firstNumber);
-            Answer = firstNumber + (ChosenReward - firstNumber);
+            if (chosenReward >= 5000)
+            { //Higher rewards, harder equations
+                Question = NewMultiplication(Answer);
+            }
+            else //Lower rewards, eaiser equations
+            {
+                switch (rng.Next(1, 4)) //chance of picking either equation type
+                {
+                    case 1:
+                        Question = NewAddition(Answer);
+                        break;
+                    case 2:
+                        Question = NewSubtraction(Answer);
+                        break;
+                    case 3:
+                        Question = NewDivision(Answer);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
-            Rewards.Remove(ChosenReward);
+        string NewAddition(int answer)
+        {
+            int firstNumber = rng.Next(1, answer);
+
+            return firstNumber + " + " + (answer - firstNumber);
+        }
+
+        string NewSubtraction(int answer)
+        {
+            int firstNumber = rng.Next(1, answer);
+
+            return (answer + firstNumber) + " - " + firstNumber;
+        }
+
+        string NewMultiplication(int answer)
+        {
+            int firstNumber = rng.Next(1, answer);
+
+            while (answer % firstNumber != 0)
+            {
+                firstNumber = rng.Next(1, answer);
+            }
+
+            return (answer / firstNumber) + " * " + firstNumber;
+        }
+
+        string NewDivision(int answer)
+        {
+            int firstNumber = rng.Next(1, answer);
+
+            return (answer * firstNumber) + " / " + firstNumber;
         }
     }
 }
