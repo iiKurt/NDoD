@@ -31,15 +31,15 @@ namespace NDoD
             }
         }
 
-        public MainWindow()
+        public MainWindow(int caseCount)
         {
             InitializeComponent();
 
-            AddButtons();
+            AddButtons(caseCount);
 
             MessageBox.Show("First, select a case to hold.", "Tutorial");
 
-            for (int i = 0; i < CaseCount; i++)
+            for (int i = 0; i < caseCount; i++)
             {
                 AvailableCases.Add(new Case());
             }
@@ -48,14 +48,14 @@ namespace NDoD
             ClaimedCasesListBox.ItemsSource = ClaimedCases;
         }
 
-        void AddButtons()
+        void AddButtons(int caseCount)
         {
             int marginLeft = 150;
             int marginTop = 61;
             const int marginLeftIncrement = 80;
             const int marginTopIncrement = 25;
 
-            for (int i = 0; i < CaseCount; i++)
+            for (int i = 0; i < caseCount; i++)
             {
                 Button button = new Button()
                 {
@@ -87,7 +87,7 @@ namespace NDoD
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
 
-                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question + " Answer:" + AvailableCases[randomCase].Answer);
+                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question + " Answer: " + AvailableCases[randomCase].Answer);
                 ClaimCase(randomCase);
 
                 waitingCases--;
@@ -174,7 +174,7 @@ namespace NDoD
 
         void AssignEquation()
         {
-            int chosenReward = Rewards[rng.Next(1, Rewards.Count)];
+            int chosenReward = Rewards[rng.Next(0, Rewards.Count - 1)]; //Index is zero based
             Rewards.Remove(chosenReward);
 
             Answer = chosenReward;
