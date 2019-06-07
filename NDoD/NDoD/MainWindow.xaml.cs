@@ -37,8 +37,7 @@ namespace NDoD
 
             AddButtons(caseCount);
 
-            MessageBox.Show("First, select a case to hold.", "Tutorial");
-
+            //Add some new cases for the user to open
             for (int i = 0; i < caseCount; i++)
             {
                 AvailableCases.Add(new Case());
@@ -46,9 +45,11 @@ namespace NDoD
 
             AvailableCasesListBox.ItemsSource = AvailableCases;
             ClaimedCasesListBox.ItemsSource = ClaimedCases;
+
+            TutorialLabel.Content = "First, select a case to hold.";
         }
 
-        void AddButtons(int caseCount)
+        void AddButtons(int caseCount) //Adds all the case buttons to the grid
         {
             int marginLeft = 150;
             int marginTop = 61;
@@ -57,9 +58,9 @@ namespace NDoD
 
             for (int i = 0; i < caseCount; i++)
             {
-                Button button = new Button()
+                Button button = new Button() //Initalize each button
                 {
-                    Content = i + 1, //starts at zero
+                    Content = i + 1, //Starts at zero, sets the label
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
                     Width = 60,
@@ -67,7 +68,7 @@ namespace NDoD
                 };
                 button.Click += CaseButton_Click;
 
-                WindowGrid.Children.Add(button);
+                WindowGrid.Children.Add(button); //Actually add the button to the GUI
 
                 marginLeft += marginLeftIncrement;
                 if (marginLeft >= 460) //After this the buttons go off the screen
@@ -80,9 +81,9 @@ namespace NDoD
         
         private void CaseButton_Click(object sender, RoutedEventArgs e)
         {
-            (sender as Button).IsEnabled = false;
+            (sender as Button).IsEnabled = false; //Disables the button so the user can't click on the same case more than once
 
-            if (holdingCase)
+            if (holdingCase) //Only allow opening a case when they have already selected a case to hold
             {
                 Random rng = new Random();
                 int randomCase = rng.Next(AvailableCases.Count);
@@ -92,6 +93,7 @@ namespace NDoD
 
                 waitingCases--;
 
+                //Choose the number of cases to be opened until banker is summeoned
                 if (waitingCases <= 0)
                 {
                     if (AvailableCases.Count <= 8)
@@ -112,16 +114,19 @@ namespace NDoD
                     MessageBox.Show("It's $" + AvailableCases[0].Question + "!!!");
                     this.Close();
                 }
+
+                TutorialLabel.Content = "Finally, continue opening cases for a better deal!";
             }
             else
             {
+                //Hide the case that has been choosen
                 SelectedCaseButton.Content = (sender as Button).Content;
                 SelectedCaseButton.Visibility = Visibility.Visible;
                 (sender as Button).Visibility = Visibility.Hidden;
 
                 holdingCase = true;
 
-                MessageBox.Show("Next, select a case to open.", "Tutorial");
+                TutorialLabel.Content = "Next, select a case to open.";
             }
         }
 
@@ -185,7 +190,7 @@ namespace NDoD
             }
             else //Lower rewards, eaiser equations
             {
-                switch (rng.Next(1, 4)) //chance of picking either equation type
+                switch (rng.Next(1, 4)) //Chance of picking either equation type
                 {
                     case 1:
                         Question = NewAddition(Answer);
@@ -220,7 +225,7 @@ namespace NDoD
         {
             int firstNumber = rng.Next(1, answer);
 
-            while (answer % firstNumber != 0)
+            while (answer % firstNumber != 0) //Make sure there aren't and decimals involved
             {
                 firstNumber = rng.Next(1, answer);
             }

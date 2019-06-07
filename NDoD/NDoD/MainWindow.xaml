@@ -28,5 +28,6 @@
 
         <Button x:Name="SelectedCaseButton" Content="Your Case" HorizontalAlignment="Left" Margin="145,0,0,10" Width="75" IsEnabled="False" Height="20" VerticalAlignment="Bottom"/>
         <Label x:Name="BankerStatusLabel" Content="Open some cases to summon the BANKER!" Margin="225,0,145,7" Height="26" VerticalAlignment="Bottom"/>
+        <Label x:Name="TutorialLabel" Margin="145,10,145,0" VerticalAlignment="Top" FontWeight="Bold"/>
     </Grid>
 </Window>
