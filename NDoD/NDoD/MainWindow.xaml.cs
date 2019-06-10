@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
@@ -11,8 +10,6 @@ namespace NDoD
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int CaseCount = 16; //Determines amount of buttons/cases to generate
-
         bool holdingCase = false;
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
@@ -144,14 +141,13 @@ namespace NDoD
             }
         }
 
-        void ClaimCase(int index)
+        void ClaimCase(int index) //Move case from AvailableCases -> ClaimedCases
         {
-            Case swap = AvailableCases[index];
+            ClaimedCases.Add(AvailableCases[index]);
             AvailableCases.RemoveAt(index);
-            ClaimedCases.Add(swap);
         }
 
-        int AverageCaseValue(ObservableCollection<Case> cases)
+        int AverageCaseValue(ObservableCollection<Case> cases) //Averages all the cases' values
         {
             int totalSum = 0;
 
@@ -161,83 +157,6 @@ namespace NDoD
             }
 
             return totalSum / cases.Count;
-        }
-    }
-
-    class Case
-    {
-        public string Question { get; private set; }
-        public int Answer { get; private set; }
-
-        static List<int> Rewards = new List<int> { 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000 };
-        static Random rng = new Random();
-
-        public Case()
-        {
-            AssignEquation();
-        }
-
-        void AssignEquation()
-        {
-            int chosenReward = Rewards[rng.Next(0, Rewards.Count - 1)]; //Index is zero based
-            Rewards.Remove(chosenReward);
-
-            Answer = chosenReward;
-
-            if (chosenReward >= 5000)
-            { //Higher rewards, harder equations
-                Question = NewMultiplication(Answer);
-            }
-            else //Lower rewards, eaiser equations
-            {
-                switch (rng.Next(1, 4)) //Chance of picking either equation type
-                {
-                    case 1:
-                        Question = NewAddition(Answer);
-                        break;
-                    case 2:
-                        Question = NewSubtraction(Answer);
-                        break;
-                    case 3:
-                        Question = NewDivision(Answer);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        string NewAddition(int answer)
-        {
-            int firstNumber = rng.Next(1, answer);
-
-            return firstNumber + " + " + (answer - firstNumber);
-        }
-
-        string NewSubtraction(int answer)
-        {
-            int firstNumber = rng.Next(1, answer);
-
-            return (answer + firstNumber) + " - " + firstNumber;
-        }
-
-        string NewMultiplication(int answer)
-        {
-            int firstNumber = rng.Next(1, answer);
-
-            while (answer % firstNumber != 0) //Make sure there aren't and decimals involved
-            {
-                firstNumber = rng.Next(1, answer);
-            }
-
-            return (answer / firstNumber) + " * " + firstNumber;
-        }
-
-        string NewDivision(int answer)
-        {
-            int firstNumber = rng.Next(1, answer);
-
-            return (answer * firstNumber) + " / " + firstNumber;
         }
     }
 }
