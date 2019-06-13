@@ -15,7 +15,7 @@ namespace NDoD
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
 
         int _waitingCases = 8;
-        int waitingCases
+        int WaitingCases
         { //TODO: bind this instead of using property
             get
             {
@@ -27,15 +27,18 @@ namespace NDoD
                 BankerStatusLabel.Content = "Open " + value + " more cases to summon the BANKER!";
             }
         }
+        int CaseCount;
 
         public MainWindow(int caseCount)
         {
             InitializeComponent();
 
-            AddButtons(caseCount);
+            CaseCount = caseCount;
+
+            AddButtons(CaseCount);
 
             //Add some new cases for the user to open
-            for (int i = 0; i < caseCount; i++)
+            for (int i = 0; i < CaseCount; i++)
             {
                 AvailableCases.Add(new Case());
             }
@@ -88,22 +91,7 @@ namespace NDoD
                 MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question + " Answer: " + AvailableCases[randomCase].Answer);
                 ClaimCase(randomCase);
 
-                waitingCases--;
-
-                //Choose the number of cases to be opened until banker is summeoned
-                if (waitingCases <= 0)
-                {
-                    if (AvailableCases.Count <= 8)
-                    {
-                        waitingCases = 1;
-                    }
-                    else
-                    {
-                        waitingCases = 6;
-                    }
-
-                    SummonBanker();
-                }
+                DecideOnSummoningBanker();
 
                 if (AvailableCases.Count <= 2)
                 {
@@ -124,6 +112,26 @@ namespace NDoD
                 holdingCase = true;
 
                 TutorialLabel.Content = "Next, select a case to open.";
+            }
+        }
+
+        void DecideOnSummoningBanker()
+        {
+            WaitingCases--;
+
+            //Choose the number of cases to be opened until banker is summeoned
+            if (WaitingCases <= 0)
+            {
+                if (AvailableCases.Count <= CaseCount / 3)
+                {
+                    WaitingCases = 1;
+                }
+                else
+                {
+                    WaitingCases = CaseCount / 4;
+                }
+
+                SummonBanker();
             }
         }
 
