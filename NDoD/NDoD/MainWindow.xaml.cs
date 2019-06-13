@@ -14,7 +14,7 @@ namespace NDoD
         ObservableCollection<Case> AvailableCases = new ObservableCollection<Case>();
         ObservableCollection<Case> ClaimedCases = new ObservableCollection<Case>();
 
-        int _waitingCases = 8;
+        int _waitingCases;
         int WaitingCases
         { //TODO: bind this instead of using property
             get
@@ -34,6 +34,7 @@ namespace NDoD
             InitializeComponent();
 
             CaseCount = caseCount;
+            WaitingCases = caseCount / 3;
 
             AddButtons(CaseCount);
 
@@ -81,38 +82,48 @@ namespace NDoD
         
         private void CaseButton_Click(object sender, RoutedEventArgs e)
         {
-            (sender as Button).IsEnabled = false; //Disables the button so the user can't click on the same case more than once
+            SelectedCaseButton.IsEnabled = false; //Disables the button so the user can't click on the same case more than once
 
             if (holdingCase) //Only allow opening a case when they have already selected a case to hold
             {
-                Random rng = new Random();
-                int randomCase = rng.Next(AvailableCases.Count);
-
-                MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question + " Answer: " + AvailableCases[randomCase].Answer);
-                ClaimCase(randomCase);
-
-                DecideOnSummoningBanker();
-
-                if (AvailableCases.Count <= 2)
-                {
-                    MessageBox.Show("Let's see what's in your case...");
-                    MessageBox.Show("It's $" + AvailableCases[0].Question + "!!!");
-                    this.Close();
-                }
-
-                TutorialLabel.Content = "Finally, continue opening cases for a better deal!";
+                OpenCase();
             }
             else
             {
-                //Hide the case that has been choosen
-                SelectedCaseButton.Content = (sender as Button).Content;
-                SelectedCaseButton.Visibility = Visibility.Visible;
-                (sender as Button).Visibility = Visibility.Hidden;
-
-                holdingCase = true;
-
-                TutorialLabel.Content = "Next, select a case to open.";
+                PickupCase();
             }
+        }
+
+        void OpenCase()
+        {
+            Random rng = new Random();
+            int randomCase = rng.Next(AvailableCases.Count);
+
+            MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question + " Answer: " + AvailableCases[randomCase].Answer);
+            ClaimCase(randomCase);
+
+            DecideOnSummoningBanker();
+
+            if (AvailableCases.Count <= 2)
+            {
+                MessageBox.Show("Let's see what's in your case...");
+                MessageBox.Show("It's $" + AvailableCases[0].Question + "!!!");
+                this.Close();
+            }
+
+            TutorialLabel.Content = "Finally, continue opening cases for a better deal!";
+        }
+
+        void PickupCase()
+        {
+            //Hide the case that has been choosen
+            SelectedCaseButton.Content = SelectedCaseButton.Content;
+            SelectedCaseButton.Visibility = Visibility.Visible;
+            SelectedCaseButton.Visibility = Visibility.Hidden;
+
+            holdingCase = true;
+
+            TutorialLabel.Content = "Next, select a case to open.";
         }
 
         void DecideOnSummoningBanker()
