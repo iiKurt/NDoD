@@ -82,19 +82,19 @@ namespace NDoD
         
         private void CaseButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectedCaseButton.IsEnabled = false; //Disables the button so the user can't click on the same case more than once
+            (sender as Button).IsEnabled = false; //Disables the button so the user can't click on the same case more than once
 
             if (holdingCase) //Only allow opening a case when they have already selected a case to hold
             {
-                OpenCase();
+                OpenCase(sender as Button);
             }
             else
             {
-                PickupCase();
+                PickupCase(sender as Button);
             }
         }
 
-        void OpenCase()
+        void OpenCase(Button toOpen)
         {
             Random rng = new Random();
             int randomCase = rng.Next(AvailableCases.Count);
@@ -114,12 +114,12 @@ namespace NDoD
             TutorialLabel.Content = "Finally, continue opening cases for a better deal!";
         }
 
-        void PickupCase()
+        void PickupCase(Button toPickup)
         {
             //Hide the case that has been choosen
-            SelectedCaseButton.Content = SelectedCaseButton.Content;
-            SelectedCaseButton.Visibility = Visibility.Visible;
-            SelectedCaseButton.Visibility = Visibility.Hidden;
+            HoldingCaseButton.Content = toPickup.Content;
+            HoldingCaseButton.Visibility = Visibility.Visible;
+            toPickup.Visibility = Visibility.Hidden;
 
             holdingCase = true;
 
