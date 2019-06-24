@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NDoD
 {
     class Case
     {
-        public string Question { get; private set; }
-        public int Answer { get; private set; }
+        public string Question { get; private set; } //Stores the question e.g. (4+6)
+        public int Answer { get; private set; } //Stores the answer e.g. (10)
 
+        //Possible answers
         static List<int> Rewards = new List<int> { 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000 };
-        static Random rng = new Random();
+        static Random rng = new Random(); //Allows generation of random numbers
 
         public Case()
         {
-            AssignEquation();
+            AssignEquation(); //Generate a random question when a new case is made
         }
 
         void AssignEquation()
         {
-            int chosenReward = Rewards[rng.Next(0, Rewards.Count - 1)]; //Index is zero based
-            Rewards.Remove(chosenReward);
+            int chosenReward = Rewards[rng.Next(0, Rewards.Count - 1)]; //Pick a random answer from Rewards list
+            Rewards.Remove(chosenReward); //Remove chosen reward from Rewards list
 
-            Answer = chosenReward;
+            Answer = chosenReward; //Assign the chosen reward as the answer to the question
 
-            if (chosenReward >= 5000)
-            { //Higher rewards, harder equations
+            if (chosenReward >= 5000) //Higher rewards, harder equations
+            {
                 Question = NewMultiplication(Answer);
             }
             else //Lower rewards, eaiser equations
@@ -67,7 +65,7 @@ namespace NDoD
         {
             int firstNumber = rng.Next(1, answer);
 
-            while (answer % firstNumber != 0) //Make sure there aren't and decimals involved
+            while (answer % firstNumber != 0) //Make sure there aren't any decimals involved
             {
                 firstNumber = rng.Next(1, answer);
             }
