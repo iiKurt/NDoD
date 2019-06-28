@@ -151,7 +151,7 @@ namespace NDoD
         {
             int offer = AverageCaseValue(AvailableCases);
 
-            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nHe offers $" + offer + ", do you accept?",
+            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nThe banker's offer is: $" + offer + ", do you accept?",
                         "Banker's Offer", MessageBoxButton.YesNo);
 
             if (bankerChoice == MessageBoxResult.Yes) //User accepted offer

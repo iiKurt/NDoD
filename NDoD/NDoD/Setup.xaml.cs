@@ -19,7 +19,7 @@ namespace NDoD
             if (ValidateCaseCountTextBox())
             {
                 Window window = new MainWindow(int.Parse(CaseCountTextBox.Text));
-                this.Close();
+                this.Hide();
                 window.Show();
             }
         }
