@@ -29,7 +29,7 @@ namespace NDoD
         }
         int CaseCount; //Stores the user's selection for number of cases to generate
 
-        public MainWindow(int caseCount)
+        public MainWindow(int caseCount, bool mathMode)
         {
             InitializeComponent();
 
@@ -41,7 +41,7 @@ namespace NDoD
             //Add some new cases to the list, for the user to open
             for (int i = 0; i < CaseCount; i++)
             {
-                AvailableCases.Add(new Case()); //Add it to the list
+                AvailableCases.Add(new Case(mathMode)); //Add it to the list
             }
 
             AvailableCasesListBox.ItemsSource = AvailableCases; //Bind the AvailableCases list to the listbox on the window

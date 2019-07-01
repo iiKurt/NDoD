@@ -18,8 +18,10 @@ namespace NDoD
         {
             if (ValidateCaseCountTextBox())
             {
-                Window window = new MainWindow(int.Parse(CaseCountTextBox.Text));
-                this.Show();
+                bool mathMode = MathModeCheckBox.IsChecked ?? true; //If null, assume we want MathMode
+
+                Window window = new MainWindow(int.Parse(CaseCountTextBox.Text), mathMode);
+                this.Close();
                 window.Show();
             }
         }

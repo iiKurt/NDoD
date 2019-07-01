@@ -15,5 +15,6 @@
         <Button Content="Start!" Margin="0,0,10,10" Click="StartButton_Click" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
         <TextBox x:Name="CaseCountTextBox" Height="23" Margin="151,76,10,0" TextWrapping="Wrap" Text="25" VerticalAlignment="Top"/>
         <Button Content="Instructions" Margin="10,0,0,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Click="InstructionsButton_Click"/>
+        <CheckBox x:Name="MathModeCheckBox" Content="Math Mode" Margin="14,105,8,0" VerticalAlignment="Top" IsChecked="True" Height="15"/>
     </Grid>
 </Window>
