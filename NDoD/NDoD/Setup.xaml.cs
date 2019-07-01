@@ -41,7 +41,7 @@ namespace NDoD
         {
             MessageBox.Show("No Deal or Deal puts YOU in the hotseat to win the most amount of money possible.\n" +
                 "After picking your case, you need to open enough cases until the banker offers to buy out your case for an average of all the available cases.\n" +
-                "This keeps on repeating, unless you denying all of the offers, until two cases are left, when then, you finally get to open your case. You win whatever is in your case.",
+                "This keeps on repeating, unless you keep denying all of the offers, until two cases are left, when then, you finally get to open your case. You win whatever is in your case.",
                 "Instructions");
         }
     }
