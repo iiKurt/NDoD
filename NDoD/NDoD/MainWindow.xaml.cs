@@ -124,6 +124,7 @@ namespace NDoD
             {
                 MessageBox.Show("Let's see what's in your case...");
                 MessageBox.Show("It's $" + AvailableCases[0].Question + "!!!"); //There will always be a case leftover at index zero
+                DialogResult = true; //Tell setup window that the game has ended
                 this.Close();
             }
 
@@ -140,6 +141,12 @@ namespace NDoD
             holdingCase = true; //The user is now holding a case
 
             TutorialLabel.Content = "Next, select a case to open.";
+        }
+
+        void ClaimCase(int index) //Move case from AvailableCases -> ClaimedCases
+        {
+            ClaimedCases.Add(AvailableCases[index]);
+            AvailableCases.RemoveAt(index);
         }
 
         void DecideOnSummoningBanker()
@@ -173,14 +180,9 @@ namespace NDoD
             if (bankerChoice == MessageBoxResult.Yes) //User accepted offer
             {
                 MessageBox.Show("Congratulations you've won $" + offer + "!");
+                DialogResult = true; //Tell setup window that the game has ended
                 this.Close();
             }
-        }
-
-        void ClaimCase(int index) //Move case from AvailableCases -> ClaimedCases
-        {
-            ClaimedCases.Add(AvailableCases[index]);
-            AvailableCases.RemoveAt(index);
         }
 
         int AverageCaseValue(ObservableCollection<Case> cases) //Averages all the cases' values

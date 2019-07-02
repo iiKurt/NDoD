@@ -3,19 +3,24 @@ using System.Collections.Generic;
 
 namespace NDoD
 {
+    class Reward
+    {
+        public List<int> Items = new List<int> { 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000 };
+    }
+
     class Case
     {
         public string Question { get; private set; } //Stores the question e.g. (4+6)
         public int Answer { get; private set; } //Stores the answer e.g. (10)
 
         //Possible answers
-        static List<int> Rewards = new List<int> { 1, 5, 10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000, 5000, 10000, 25000, 50000, 75000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000 };
+        public static Reward AllRewards = new Reward();
         static Random rng = new Random(); //Allows generation of random numbers
 
         public Case()
         {
-            int chosenReward = Rewards[rng.Next(0, Rewards.Count - 1)]; //Pick a random answer from Rewards list
-            Rewards.Remove(chosenReward); //Remove chosen reward from Rewards list
+            int chosenReward = AllRewards.Items[rng.Next(0, AllRewards.Items.Count - 1)]; //Pick a random answer from Rewards list
+            AllRewards.Items.Remove(chosenReward); //Remove chosen reward from Rewards list
 
             Question = chosenReward.ToString();
             Answer = chosenReward; //Assign the chosen reward as the answer to the question

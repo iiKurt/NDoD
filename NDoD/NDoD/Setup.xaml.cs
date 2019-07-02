@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace NDoD
 {
@@ -18,11 +16,28 @@ namespace NDoD
         {
             if (ValidateCaseCountTextBox())
             {
+                Case.AllRewards = new Reward(); //Reset rewards
+
                 bool mathMode = MathModeCheckBox.IsChecked ?? true; //If null, assume we want MathMode
 
                 Window window = new MainWindow(int.Parse(CaseCountTextBox.Text), mathMode);
-                this.Close();
-                window.Show();
+                this.Hide();
+
+                if (window.ShowDialog() == true) //Game has ended without quitting
+                {
+                    if (MessageBox.Show("Do you want to play again?", "Play again?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    { //User selected yes
+                        this.Show();
+                    }
+                    else
+                    { //User selected no
+                        this.Close();
+                    }
+                }
+                else
+                { //Game was quit
+                    this.Close();
+                }
             }
         }
 
