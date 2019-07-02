@@ -37,15 +37,7 @@ namespace NDoD
             WaitingCases = caseCount / 3; //The number of cases needed to initally summon the banker varies depending on how many cases are actually available
 
             AddButtons(CaseCount); //Generate buttons on the grid that let the user pick a case
-
-            //Add some new cases to the list, for the user to open
-            for (int i = 0; i < CaseCount; i++)
-            {
-                AvailableCases.Add(new Case(mathMode)); //Add it to the list
-            }
-
-            AvailableCasesListBox.ItemsSource = AvailableCases; //Bind the AvailableCases list to the listbox on the window
-            ClaimedCasesListBox.ItemsSource = ClaimedCases; //Bind the ClaimedCases list to the other listbix on the window
+            GenerateCases(mathMode); //Make some new cases and add then to the list
 
             TutorialLabel.Content = "First, select a case to hold."; //Set the label on the window
         }
@@ -78,6 +70,30 @@ namespace NDoD
                     marginTop += marginTopIncrement;
                 }
             }
+        }
+
+        void GenerateCases(bool mathMode)
+        {
+            //Add some new cases to the list, for the user to open
+            if (mathMode)
+            {
+                for (int i = 0; i < CaseCount; i++)
+                {
+                    Case newCase = new Case();
+                    newCase.AssignEquation();
+                    AvailableCases.Add(newCase); //Add it to the list
+                }
+            }
+            else
+            {
+                for (int i = 0; i < CaseCount; i++)
+                {
+                    AvailableCases.Add(new Case()); //Add it to the list
+                }
+            }
+
+            AvailableCasesListBox.ItemsSource = AvailableCases; //Bind the AvailableCases list to the listbox on the window
+            ClaimedCasesListBox.ItemsSource = ClaimedCases; //Bind the ClaimedCases list to the other listbix on the window
         }
         
         private void CaseButton_Click(object sender, RoutedEventArgs e)
