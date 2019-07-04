@@ -114,7 +114,7 @@ namespace NDoD
         {
             Random rng = new Random();
             int randomCase = rng.Next(AvailableCases.Count);
-
+            
             MessageBox.Show("This case contains: $" + AvailableCases[randomCase].Question);
             ClaimCase(randomCase);
 
@@ -123,7 +123,7 @@ namespace NDoD
             if (AvailableCases.Count <= 2)
             {
                 MessageBox.Show("Let's see what's in your case...");
-                MessageBox.Show("It's $" + AvailableCases[0].Question + "!!!"); //There will always be a case leftover at index zero
+                MessageBox.Show("It's $" + String.Format("{0:n0}", AvailableCases[0].Question) + "!!!"); //There will always be a case leftover at index zero
                 DialogResult = true; //Tell setup window that the game has ended
                 this.Close();
             }
@@ -174,7 +174,7 @@ namespace NDoD
         {
             int offer = AverageCaseValue(AvailableCases);
 
-            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nThe banker's offer is: $" + offer + ", do you accept?",
+            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nThe banker's offer is: $" + String.Format("{0:n0}", offer) + ", do you accept?",
                         "Banker's Offer", MessageBoxButton.YesNo);
 
             if (bankerChoice == MessageBoxResult.Yes) //User accepted offer

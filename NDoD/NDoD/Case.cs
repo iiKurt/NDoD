@@ -10,7 +10,23 @@ namespace NDoD
 
     class Case
     {
-        public string Question { get; private set; } //Stores the question e.g. (4+6)
+        string question;
+        public string Question //Stores the question e.g. (4+6)
+        {
+            get
+            {
+                int convert;
+                if (int.TryParse(question, out convert))
+                {
+                    return String.Format("{0:n0}", convert); //If the question is a single number, add commas
+                }
+                else
+                {
+                    return question;
+                }
+            }
+            private set { question = value; }
+        }
         public int Answer { get; private set; } //Stores the answer e.g. (10)
 
         //Possible answers
