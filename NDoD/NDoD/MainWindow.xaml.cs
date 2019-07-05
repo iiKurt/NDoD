@@ -28,6 +28,7 @@ namespace NDoD
             }
         }
         int CaseCount; //Stores the user's selection for number of cases to generate
+        bool WonGame; //Game has been won
 
         public MainWindow(int caseCount, bool mathMode)
         {
@@ -120,12 +121,9 @@ namespace NDoD
 
             DecideOnSummoningBanker();
 
-            if (AvailableCases.Count <= 2)
+            if (AvailableCases.Count <= 2) //Less than 3 cases are left
             {
-                MessageBox.Show("Let's see what's in your case...");
-                MessageBox.Show("It's $" + String.Format("{0:n0}", AvailableCases[0].Question) + "!!!"); //There will always be a case leftover at index zero
-                DialogResult = true; //Tell setup window that the game has ended
-                this.Close();
+                WinGame();
             }
 
             TutorialLabel.Content = "Finally, continue opening cases for a better deal!";
@@ -174,14 +172,27 @@ namespace NDoD
         {
             int offer = AverageCaseValue(AvailableCases);
 
-            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nThe banker's offer is: $" + String.Format("{0:n0}", offer) + ", do you accept?",
+            MessageBoxResult bankerChoice = MessageBox.Show("The banker has been summoned!\n\nThe banker's offer is: $" + String.Format("{0:n0}", offer) + ".\n\nDo you accept?",
                         "Banker's Offer", MessageBoxButton.YesNo);
 
             if (bankerChoice == MessageBoxResult.Yes) //User accepted offer
             {
-                MessageBox.Show("Congratulations you've won $" + offer + "!");
+                MessageBox.Show("Congratulations! You've won $" + String.Format("{0:n0}", offer) + "!");
+                WinGame();
+            }
+        }
+
+        void WinGame()
+        {
+            if (!WonGame) //Only call this method once
+            {
+                MessageBox.Show("Let's see what's in your case...");
+                MessageBox.Show("It's $" + String.Format("{0:n0}", AvailableCases[0].Question) + "!!!"); //There will always be a case leftover at index zero
+
                 DialogResult = true; //Tell setup window that the game has ended
                 this.Close();
+
+                WonGame = true;
             }
         }
 
